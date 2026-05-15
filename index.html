@@ -13,6 +13,10 @@
         
         .section-header { color: #ffffff; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-bottom:.5px solid #D30000; padding-bottom: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         
+        /* Botón Volver */
+        .btn-return { color: #888; text-decoration: none; font-size: 0.65rem; border: 1px solid #333; padding: 4px 8px; border-radius: 4px; transition: 0.3s; }
+        .btn-return:hover { background: #D30000; color: white; border-color: #D30000; }
+
         .progress-container { width: 100%; background: #222; height: 6px; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { height: 100%; background: #D30000; width: 0%; transition: width 0.4s ease; }
         
@@ -23,7 +27,9 @@
         .word-box.active { border-color: #00FF00; background: #0a250a; transform: scale(1.02); }
         
         .word-text { font-size: 1.4rem; font-weight: 700; display: block; margin-bottom: 5px; }
-        .ipa-text { color: #D30000; font-size: 0.85rem; font-weight: 400; }
+        
+        /* Fonemas del mismo tamaño que las palabras */
+        .ipa-text { color: #D30000; font-size: 1.4rem; font-weight: 400; display: block; margin-bottom: 5px; }
         
         .translation-small { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 5px; cursor: pointer; transition: 0.3s; }
         .blur { filter: blur(2.5px); opacity: 0.8; }
@@ -45,7 +51,7 @@
 
 <div class="action-card">
     <div class="section-header">
-        <span>Minimal Pairs Challenge</span>
+        <a href="#" class="btn-return" onclick="location.reload()">↺ VOLVER</a>
         <span id="counter" style="color: #D30000;">1 / 45</span>
     </div>
     
@@ -81,7 +87,6 @@
 </div>
 
 <script>
-    // Mismo arreglo DATA actualizado
     const data = [
         { a: "very", b: "berry", ipaA: "/ˈver.i/", ipaB: "/ˈber.i/", sA: "Muy", sB: "Baya" },
         { a: "vote", b: "boat", ipaA: "/voʊt/", ipaB: "/boʊt/", sA: "Voto", sB: "Bote" },
@@ -130,7 +135,6 @@
         { a: "bird", b: "sugar", ipaA: "/bɝːrd/", ipaB: "/ˈʃʊɡ.ɚ/", sA: "Pájaro", sB: "Azúcar" }
     ];
 
-    // LÓGICA DE FLEXIBILIDAD: Agregamos variaciones comunes que el motor confunde
     const variants = {
         "berry": ["barry", "bury", "very"],
         "very": ["berry", "bury", "ferry"],
@@ -160,7 +164,6 @@
         const wordB = data[idx].b.toLowerCase();
         const fb = document.getElementById('feedback');
 
-        // Función para revisar si lo escuchado es aceptable para la palabra A o B
         const checkMatch = (input, target) => {
             if (input.includes(target)) return true;
             if (variants[target] && variants[target].some(v => input.includes(v))) return true;
@@ -216,10 +219,3 @@
             document.getElementById('feedback').innerHTML = "Listo.";
         } else {
             document.getElementById('quiz-area').innerHTML = `<h2 style="color:#00FF00">¡RETO COMPLETADO!</h2><button class="btn-speak" onclick="location.reload()">REINICIAR</button>`;
-        }
-    }
-
-    document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
-</script>
-</body>
-</html>
