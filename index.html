@@ -6,24 +6,36 @@
     <title>Consonant Mastery | Kira's English</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        
         body { margin: 0; padding: 0; background-color: #000; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        
         .action-card { background: #000; border-left: 4px solid #D30000; border-radius: 8px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); width: 95%; max-width: 450px; box-sizing: border-box; }
+        
         .section-header { color: #ffffff; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-bottom:.5px solid #D30000; padding-bottom: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        
         .progress-container { width: 100%; background: #222; height: 6px; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { height: 100%; background: #D30000; width: 0%; transition: width 0.4s ease; }
+        
         .exercise-block { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #222; text-align: center; }
+        
         .pair-grid { display: flex; gap: 10px; margin-bottom: 20px; }
         .word-box { flex: 1; background: #1a1a1a; padding: 15px 10px; border-radius: 8px; border: 2px solid #333; transition: 0.3s; }
         .word-box.active { border-color: #00FF00; background: #0a250a; transform: scale(1.02); }
+        
         .word-text { font-size: 1.4rem; font-weight: 700; display: block; margin-bottom: 5px; }
         .ipa-text { color: #D30000; font-size: 0.85rem; font-weight: 400; }
-        .translation-small { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 5px; cursor: pointer; transition: 0.3s; }
-        .blur { filter: blur(2.5px); opacity: 0.8; }
+        
+        .translation-small { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 5px; cursor: pointer; transition: 0.3s; min-height: 15px; }
+        .blur { filter: blur(4px); opacity: 0.6; }
+
         button { width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin: 8px 0; border: none; transition: 0.3s; }
+        
         .btn-speak { background: #D30000; color: white; box-shadow: 0 4px 15px rgba(211, 0, 0, 0.3); }
         .btn-next { background: #00FF00; color: #000; margin-top: 15px; }
         .btn-skip { background: transparent; color: #555; border: 1px solid #222; font-size: 0.7rem; }
+
         #feedback { margin-top: 15px; min-height: 45px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-align: center; }
+        
         @keyframes pulse-red { 0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); } 70% { box-shadow: 0 0 0px 20px rgba(211, 0, 0, 0); } 100% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0); } }
         .listening-active { animation: pulse-red 1.5s infinite; background-color: #ff0000 !important; }
         .hidden { display: none; }
@@ -36,16 +48,28 @@
         <span>Consonant Mastery Challenge</span>
         <span id="counter" style="color: #D30000;">1 / 45</span>
     </div>
+    
     <div class="progress-container">
         <div class="progress-bar" id="progress-bar"></div>
     </div>
+
     <div id="quiz-area">
         <div class="exercise-block">
-            <p style="font-size: 0.7rem; color: #888; margin-top: 0;">Pronuncia uno de los dos:</p>
+            <p style="font-size: 0.7rem; color: #888; margin-top: 0;">Pronuncia claramente uno de los dos:</p>
+            
             <div class="pair-grid">
-                <div class="word-box" id="box1"><span class="word-text" id="w1">Very</span><span class="ipa-text" id="ipa1">/ˈver.i/</span><div class="translation-small blur" id="s1">Muy</div></div>
-                <div class="word-box" id="box2"><span class="word-text" id="w2">Berry</span><span class="ipa-text" id="ipa2">/ˈber.i/</span><div class="translation-small blur" id="s2">Baya</div></div>
+                <div class="word-box" id="box1">
+                    <span class="word-text" id="w1">Very</span>
+                    <span class="ipa-text" id="ipa1">/ˈver.i/</span>
+                    <div class="translation-small blur" onclick="this.classList.toggle('blur')" id="s1">Muy</div>
+                </div>
+                <div class="word-box" id="box2">
+                    <span class="word-text" id="w2">Berry</span>
+                    <span class="ipa-text" id="ipa2">/ˈber.i/</span>
+                    <div class="translation-small blur" onclick="this.classList.toggle('blur')" id="s2">Baya</div>
+                </div>
             </div>
+
             <button class="btn-speak" id="mic" onclick="start()">Presiona y Habla 🎤</button>
             <div id="feedback">Listo para escuchar.</div>
             <button id="next" class="btn-next hidden" onclick="go()">Siguiente Par ➔</button>
@@ -105,14 +129,14 @@
         { a: "faith", b: "faze", ipaA: "/feɪθ/", ipaB: "/feɪz/", sA: "Fe", sB: "Inquietar" },
         { a: "death", b: "does", ipaA: "/deθ/", ipaB: "/dʌz/", sA: "Muerte", sB: "Hace" },
 
-        // 8. ʒ vs ʃ (Voiced / Voiceless)
+        // 8. ʒ vs ʃ
         { a: "pleasure", b: "pressure", ipaA: "/ˈpleʒ.ɚ/", ipaB: "/ˈpreʃ.ɚ/", sA: "Placer", sB: "Presión" },
         { a: "vision", b: "fission", ipaA: "/ˈvɪʒ.ən/", ipaB: "/ˈfɪʃ.ən/", sA: "Visión", sB: "Fisión" },
         { a: "measure", b: "mesher", ipaA: "/ˈmeʒ.ɚ/", ipaB: "/ˈmeʃ.ɚ/", sA: "Medida", sB: "Enrejador" },
         { a: "confusion", b: "confession", ipaA: "/kənˈfjuː.ʒən/", ipaB: "/kənˈfeʃ.ən/", sA: "Confusión", sB: "Confesión" },
         { a: "casual", b: "cashier", ipaA: "/ˈkæʒ.u.əl/", ipaB: "/kæˈʃɪr/", sA: "Casual", sB: "Cajero" },
 
-        // 9. er vs ɚ (Stressed / Unstressed)
+        // 9. er vs ɚ
         { a: "sir", b: "answer", ipaA: "/sɝː/", ipaB: "/ˈæn.sɚ/", sA: "Señor", sB: "Respuesta" },
         { a: "third", b: "standard", ipaA: "/θɝːrd/", ipaB: "/ˈstæn.dɚd/", sA: "Tercero", sB: "Estándar" },
         { a: "burn", b: "butter", ipaA: "/bɝːrn/", ipaB: "/ˈbʌt̬.ɚ/", sA: "Quemar", sB: "Mantequilla" },
@@ -150,9 +174,21 @@
         } else { fb.innerHTML = `<span style="color:#D30000">Escuché: "${heard}"... intenta de nuevo.</span>`; }
     };
 
-    function showNext() { document.getElementById('next').classList.remove('hidden'); document.getElementById('skip').classList.add('hidden'); }
-    rec.onend = () => { const micBtn = document.getElementById('mic'); micBtn.classList.remove('listening-active'); micBtn.innerText = "Presiona y Habla 🎤"; };
-    function resetBoxes() { document.getElementById('box1').classList.remove('active'); document.getElementById('box2').classList.remove('active'); }
+    function showNext() { 
+        document.getElementById('next').classList.remove('hidden'); 
+        document.getElementById('skip').classList.add('hidden'); 
+    }
+
+    rec.onend = () => { 
+        const micBtn = document.getElementById('mic'); 
+        micBtn.classList.remove('listening-active'); 
+        micBtn.innerText = "Presiona y Habla 🎤"; 
+    };
+
+    function resetBoxes() { 
+        document.getElementById('box1').classList.remove('active'); 
+        document.getElementById('box2').classList.remove('active'); 
+    }
 
     function go() {
         idx++;
@@ -163,6 +199,11 @@
             document.getElementById('ipa2').innerText = data[idx].ipaB;
             document.getElementById('s1').innerText = data[idx].sA;
             document.getElementById('s2').innerText = data[idx].sB;
+            
+            // Forzar el blur al cambiar de palabra
+            document.getElementById('s1').classList.add('blur');
+            document.getElementById('s2').classList.add('blur');
+            
             resetBoxes();
             document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
             document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
@@ -176,4 +217,4 @@
     document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
 </script>
 </body>
-</html> 
+</html>
