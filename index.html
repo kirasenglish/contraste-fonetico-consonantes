@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consonant Mastery | Kira's English</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        body { margin: 0; padding: 0; background-color: #000; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
+        .action-card { background: #000; border-left: 4px solid #D30000; border-radius: 8px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); width: 95%; max-width: 450px; box-sizing: border-box; }
+        .section-header { color: #ffffff; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-bottom:.5px solid #D30000; padding-bottom: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .progress-container { width: 100%; background: #222; height: 6px; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #D30000; width: 0%; transition: width 0.4s ease; }
+        .exercise-block { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #222; text-align: center; }
+        .pair-grid { display: flex; gap: 10px; margin-bottom: 20px; }
+        .word-box { flex: 1; background: #1a1a1a; padding: 15px 10px; border-radius: 8px; border: 2px solid #333; transition: 0.3s; }
+        .word-box.active { border-color: #00FF00; background: #0a250a; transform: scale(1.02); }
+        .word-text { font-size: 1.4rem; font-weight: 700; display: block; margin-bottom: 5px; }
+        .ipa-text { color: #D30000; font-size: 0.85rem; font-weight: 400; }
+        .translation-small { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 5px; cursor: pointer; transition: 0.3s; }
+        .blur { filter: blur(2.5px); opacity: 0.8; }
+        button { width: 100%; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; margin: 8px 0; border: none; transition: 0.3s; }
+        .btn-speak { background: #D30000; color: white; box-shadow: 0 4px 15px rgba(211, 0, 0, 0.3); }
+        .btn-next { background: #00FF00; color: #000; margin-top: 15px; }
+        .btn-skip { background: transparent; color: #555; border: 1px solid #222; font-size: 0.7rem; }
+        #feedback { margin-top: 15px; min-height: 45px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-align: center; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); } 70% { box-shadow: 0 0 0px 20px rgba(211, 0, 0, 0); } 100% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0); } }
+        .listening-active { animation: pulse-red 1.5s infinite; background-color: #ff0000 !important; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="action-card">
+    <div class="section-header">
+        <span>Consonant Mastery Challenge</span>
+        <span id="counter" style="color: #D30000;">1 / 45</span>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div id="quiz-area">
+        <div class="exercise-block">
+            <p style="font-size: 0.7rem; color: #888; margin-top: 0;">Pronuncia uno de los dos:</p>
+            <div class="pair-grid">
+                <div class="word-box" id="box1"><span class="word-text" id="w1">Very</span><span class="ipa-text" id="ipa1">/ˈver.i/</span><div class="translation-small blur" id="s1">Muy</div></div>
+                <div class="word-box" id="box2"><span class="word-text" id="w2">Berry</span><span class="ipa-text" id="ipa2">/ˈber.i/</span><div class="translation-small blur" id="s2">Baya</div></div>
+            </div>
+            <button class="btn-speak" id="mic" onclick="start()">Presiona y Habla 🎤</button>
+            <div id="feedback">Listo para escuchar.</div>
+            <button id="next" class="btn-next hidden" onclick="go()">Siguiente Par ➔</button>
+            <button id="skip" class="btn-skip" onclick="go()">Saltar Par</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const data = [
+        // 1. V vs B
+        { a: "very", b: "berry", ipaA: "/ˈver.i/", ipaB: "/ˈber.i/", sA: "Muy", sB: "Baya" },
+        { a: "vote", b: "boat", ipaA: "/voʊt/", ipaB: "/boʊt/", sA: "Voto", sB: "Bote" },
+        { a: "vest", b: "best", ipaA: "/vest/", ipaB: "/best/", sA: "Chaleco", sB: "Mejor" },
+        { a: "vase", b: "base", ipaA: "/veɪs/", ipaB: "/beɪs/", sA: "Florero", sB: "Base" },
+        { a: "van", b: "ban", ipaA: "/væn/", ipaB: "/bæn/", sA: "Furgoneta", sB: "Prohibición" },
+
+        // 2. ð vs D
+        { a: "they", b: "day", ipaA: "/ðeɪ/", ipaB: "/deɪ/", sA: "Ellos", sB: "Día" },
+        { a: "there", b: "dare", ipaA: "/ðer/", ipaB: "/der/", sA: "Allá", sB: "Atreverse" },
+        { a: "then", b: "den", ipaA: "/ðen/", ipaB: "/den/", sA: "Entonces", sB: "Guarida" },
+        { a: "though", b: "dough", ipaA: "/ðoʊ/", ipaB: "/doʊ/", sA: "Aunque", sB: "Masa" },
+        { a: "breathe", b: "breed", ipaA: "/briːð/", ipaB: "/briːd/", sA: "Respirar", sB: "Raza" },
+
+        // 3. Z vs S
+        { a: "prize", b: "price", ipaA: "/praɪz/", ipaB: "/praɪs/", sA: "Premio", sB: "Precio" },
+        { a: "phase", b: "face", ipaA: "/feɪz/", ipaB: "/feɪs/", sA: "Fase", sB: "Cara" },
+        { a: "eyes", b: "ice", ipaA: "/aɪz/", ipaB: "/aɪs/", sA: "Ojos", sB: "Hielo" },
+        { a: "buzz", b: "bus", ipaA: "/bʌz/", ipaB: "/bʌs/", sA: "Zumbido", sB: "Autobús" },
+        { a: "zip", b: "sip", ipaA: "/zɪp/", ipaB: "/sɪp/", sA: "Cierre", sB: "Sorbito" },
+
+        // 4. dʒ vs J
+        { a: "jet", b: "yet", ipaA: "/dʒet/", ipaB: "/jet/", sA: "Avión", sB: "Todavía" },
+        { a: "job", b: "yob", ipaA: "/dʒɑːb/", ipaB: "/jɑːb/", sA: "Trabajo", sB: "Vándalo" },
+        { a: "juice", b: "use", ipaA: "/dʒuːs/", ipaB: "/juːs/", sA: "Jugo", sB: "Uso" },
+        { a: "joke", b: "yoke", ipaA: "/dʒoʊk/", ipaB: "/joʊk/", sA: "Broma", sB: "Yugo" },
+        { a: "jello", b: "yellow", ipaA: "/ˈdʒel.oʊ/", ipaB: "/ˈjel.oʊ/", sA: "Gelatina", sB: "Amarillo" },
+
+        // 5. ʃ vs tʃ
+        { a: "share", b: "chair", ipaA: "/ʃer/", ipaB: "/tʃer/", sA: "Compartir", sB: "Silla" },
+        { a: "ship", b: "chip", ipaA: "/ʃɪp/", ipaB: "/tʃɪp/", sA: "Barco", sB: "Papita" },
+        { a: "wash", b: "watch", ipaA: "/wɑːʃ/", ipaB: "/wɑːtʃ/", sA: "Lavar", sB: "Ver/Reloj" },
+        { a: "shoes", b: "choose", ipaA: "/ʃuːz/", ipaB: "/tʃuːz/", sA: "Zapatos", sB: "Elegir" },
+        { a: "cash", b: "catch", ipaA: "/kæʃ/", ipaB: "/kætʃ/", sA: "Efectivo", sB: "Atrapar" },
+
+        // 6. NG vs NK
+        { a: "sing", b: "sink", ipaA: "/sɪŋ/", ipaB: "/sɪŋk/", sA: "Cantar", sB: "Hundirse" },
+        { a: "thing", b: "think", ipaA: "/θɪŋ/", ipaB: "/θɪŋk/", sA: "Cosa", sB: "Pensar" },
+        { a: "wing", b: "wink", ipaA: "/wɪŋ/", ipaB: "/wɪŋk/", sA: "Ala", sB: "Guiño" },
+        { a: "bang", b: "bank", ipaA: "/bæŋ/", ipaB: "/bæŋk/", sA: "Golpe", sB: "Banco" },
+        { a: "ring", b: "rink", ipaA: "/rɪŋ/", ipaB: "/rɪŋk/", sA: "Anillo", sB: "Pista" },
+
+        // 7. θ vs Z
+        { a: "thaw", b: "zoo", ipaA: "/θɔː/", ipaB: "/zuː/", sA: "Descongelar", sB: "Zoológico" },
+        { a: "thin", b: "zing", ipaA: "/θɪn/", ipaB: "/zɪŋ/", sA: "Delgado", sB: "Energía" },
+        { a: "math", b: "maze", ipaA: "/mæθ/", ipaB: "/meɪz/", sA: "Mates", sB: "Laberinto" },
+        { a: "faith", b: "faze", ipaA: "/feɪθ/", ipaB: "/feɪz/", sA: "Fe", sB: "Inquietar" },
+        { a: "death", b: "does", ipaA: "/deθ/", ipaB: "/dʌz/", sA: "Muerte", sB: "Hace" },
+
+        // 8. ʒ vs ʃ (Voiced / Voiceless)
+        { a: "pleasure", b: "pressure", ipaA: "/ˈpleʒ.ɚ/", ipaB: "/ˈpreʃ.ɚ/", sA: "Placer", sB: "Presión" },
+        { a: "vision", b: "fission", ipaA: "/ˈvɪʒ.ən/", ipaB: "/ˈfɪʃ.ən/", sA: "Visión", sB: "Fisión" },
+        { a: "measure", b: "mesher", ipaA: "/ˈmeʒ.ɚ/", ipaB: "/ˈmeʃ.ɚ/", sA: "Medida", sB: "Enrejador" },
+        { a: "confusion", b: "confession", ipaA: "/kənˈfjuː.ʒən/", ipaB: "/kənˈfeʃ.ən/", sA: "Confusión", sB: "Confesión" },
+        { a: "casual", b: "cashier", ipaA: "/ˈkæʒ.u.əl/", ipaB: "/kæˈʃɪr/", sA: "Casual", sB: "Cajero" },
+
+        // 9. er vs ɚ (Stressed / Unstressed)
+        { a: "sir", b: "answer", ipaA: "/sɝː/", ipaB: "/ˈæn.sɚ/", sA: "Señor", sB: "Respuesta" },
+        { a: "third", b: "standard", ipaA: "/θɝːrd/", ipaB: "/ˈstæn.dɚd/", sA: "Tercero", sB: "Estándar" },
+        { a: "burn", b: "butter", ipaA: "/bɝːrn/", ipaB: "/ˈbʌt̬.ɚ/", sA: "Quemar", sB: "Mantequilla" },
+        { a: "nurse", b: "letter", ipaA: "/nɝːrs/", ipaB: "/ˈlet̬.ɚ/", sA: "Enfermera", sB: "Carta" },
+        { a: "bird", b: "sugar", ipaA: "/bɝːrd/", ipaB: "/ˈʃʊɡ.ɚ/", sA: "Pájaro", sB: "Azúcar" }
+    ];
+
+    let idx = 0;
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = Recognition ? new Recognition() : null;
+    if(rec) { rec.lang = 'en-US'; rec.continuous = false; }
+
+    function start() {
+        if (!rec) return alert("Micro no compatible.");
+        resetBoxes();
+        try { rec.start(); } catch(e) {}
+        const micBtn = document.getElementById('mic');
+        micBtn.classList.add('listening-active');
+        micBtn.innerText = "Escuchando... 🎤";
+    }
+
+    rec.onresult = (e) => {
+        const heard = e.results[0][0].transcript.toLowerCase().trim();
+        const wordA = data[idx].a.toLowerCase();
+        const wordB = data[idx].b.toLowerCase();
+        const fb = document.getElementById('feedback');
+        if (heard.includes(wordA)) {
+            document.getElementById('box1').classList.add('active');
+            fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].a}" ✅</span>`;
+            showNext();
+        } else if (heard.includes(wordB)) {
+            document.getElementById('box2').classList.add('active');
+            fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].b}" ✅</span>`;
+            showNext();
+        } else { fb.innerHTML = `<span style="color:#D30000">Escuché: "${heard}"... intenta de nuevo.</span>`; }
+    };
+
+    function showNext() { document.getElementById('next').classList.remove('hidden'); document.getElementById('skip').classList.add('hidden'); }
+    rec.onend = () => { const micBtn = document.getElementById('mic'); micBtn.classList.remove('listening-active'); micBtn.innerText = "Presiona y Habla 🎤"; };
+    function resetBoxes() { document.getElementById('box1').classList.remove('active'); document.getElementById('box2').classList.remove('active'); }
+
+    function go() {
+        idx++;
+        if (idx < data.length) {
+            document.getElementById('w1').innerText = data[idx].a.charAt(0).toUpperCase() + data[idx].a.slice(1);
+            document.getElementById('w2').innerText = data[idx].b.charAt(0).toUpperCase() + data[idx].b.slice(1);
+            document.getElementById('ipa1').innerText = data[idx].ipaA;
+            document.getElementById('ipa2').innerText = data[idx].ipaB;
+            document.getElementById('s1').innerText = data[idx].sA;
+            document.getElementById('s2').innerText = data[idx].sB;
+            resetBoxes();
+            document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
+            document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+            document.getElementById('next').classList.add('hidden');
+            document.getElementById('skip').classList.remove('hidden');
+            document.getElementById('feedback').innerHTML = "Listo.";
+        } else {
+            document.getElementById('quiz-area').innerHTML = `<h2 style="color:#00FF00">¡RETO COMPLETADO!</h2><button class="btn-speak" onclick="location.reload()">REINICIAR</button>`;
+        }
+    }
+    document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
+</script>
+</body>
+</html> 
