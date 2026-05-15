@@ -7,69 +7,69 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
         
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background-color: #000; 
-            font-family: 'Montserrat', sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            color: white; 
-        }
+        body { margin: 0; padding: 0; background-color: #000; font-family: 'Montserrat', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
         
         .action-card { 
             background: #000; 
-            border-left: 6px solid #D30000; 
+            border-left: 8px solid #D30000; 
             border-radius: 12px; 
             padding: 40px; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.9); 
-            width: 98%; 
-            max-width: 1200px; 
-            min-height: 95vh; 
-            display: flex; 
-            flex-direction: column; 
+            width: 95%; 
+            max-width: 900px; 
             box-sizing: border-box; 
-            margin: 10px;
-        }
-        
-        /* Cabecera con Logo integrado antes del texto */
-        .section-header { 
-            color: #ffffff; 
-            font-size: 1.2rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            border-bottom: 3px solid #D30000; 
-            padding-bottom: 15px; 
-            margin-bottom: 30px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
         }
 
-        .header-title-area {
+        .section-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            margin-bottom: 25px; 
+        }
+
+        .header-title-container {
             display: flex;
             align-items: center;
             gap: 15px;
+            border-bottom: 3px solid #D30000; 
+            padding-bottom: 12px;
         }
 
-        .header-logo {
-            width: 50px;
+        .header-title-container span {
+            color: #ffffff; 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+        }
+
+        .logo-bracket {
+            width: 50px; 
             height: 50px;
-            border-radius: 50%;
-            border: 2px solid #D30000;
+            background: #000;
+            border-left: 4px solid #D30000;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 6px;
         }
 
-        .progress-container { width: 100%; background: #222; height: 12px; border-radius: 6px; margin-bottom: 40px; overflow: hidden; }
+        .logo-bracket img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #counter { font-size: 1.1rem; font-weight: 700; padding-bottom: 12px; }
+
+        .progress-container { width: 100%; background: #222; height: 10px; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
         .progress-bar { height: 100%; background: #D30000; width: 0%; transition: width 0.4s ease; }
         
-        #quiz-area { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .exercise-block { background: #111; padding: 40px; border-radius: 20px; border: 1px solid #222; text-align: center; }
         
-        .exercise-block { background: #111; padding: 50px 30px; border-radius: 20px; border: 1px solid #222; text-align: center; }
+        .pair-grid { display: flex; gap: 20px; margin-bottom: 30px; }
         
-        .pair-grid { display: flex; gap: 20px; margin-bottom: 40px; }
-
         .word-box { 
             flex: 1; 
             background: #1a1a1a; 
@@ -78,46 +78,44 @@
             border: 3px solid #333; 
             transition: 0.3s; 
         }
-
         .word-box.active { border-color: #00FF00; background: #0a250a; transform: scale(1.05); }
         
-        /* Palabras y Fonemas: Mismo tamaño y Bold */
-        .word-text { font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 700; display: block; margin-bottom: 10px; }
-        .ipa-text { color: #D30000; font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 700; display: block; margin-bottom: 10px; }
+        .word-text, .ipa-text { font-size: 2.2rem; font-weight: 700; display: block; margin-bottom: 10px; }
+        .ipa-text { color: #D30000; }
         
-        .translation-small { font-size: 1.1rem; color: #888; font-style: italic; margin-top: 15px; cursor: pointer; transition: 0.3s; }
-        .blur { filter: blur(3.5px); opacity: 0.7; }
+        .translation-small { font-size: 1.1rem; color: #888; font-style: italic; margin-top: 15px; cursor: pointer; }
+        .blur { filter: blur(4px); opacity: 0.6; }
         
         button { 
             width: 100%; 
-            max-width: 600px; 
-            margin: 15px auto; 
-            padding: 25px; 
+            max-width: 500px; 
+            padding: 22px; 
             border-radius: 12px; 
             font-weight: 700; 
             cursor: pointer; 
             text-transform: uppercase; 
             font-family: 'Montserrat', sans-serif; 
             font-size: 1.2rem; 
+            margin: 12px auto; 
             border: none; 
-            transition: 0.3s; 
+            transition: 0.2s; 
             display: block;
         }
-
+        
         .btn-speak { background: #D30000; color: white; box-shadow: 0 6px 20px rgba(211, 0, 0, 0.4); }
-        .btn-next { background: #00FF00; color: #000; margin-top: 30px; }
-        .btn-skip { background: transparent; color: #666; border: 1px solid #333; font-size: 0.9rem; padding: 15px; }
+        .btn-next { background: #00FF00; color: #000; margin-top: 20px; }
+        .btn-skip { background: transparent; color: #555; border: 1px solid #222; font-size: 0.9rem; }
         
-        #feedback { margin-top: 25px; min-height: 60px; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-align: center; }
+        #feedback { margin-top: 20px; min-height: 50px; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; justify-content: center; text-align: center; }
         
-        @keyframes pulse-red { 0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); } 70% { box-shadow: 0 0 0px 30px rgba(211, 0, 0, 0); } 100% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0); } }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0.7); } 70% { box-shadow: 0 0 0px 25px rgba(211, 0, 0, 0); } 100% { box-shadow: 0 0 0px 0px rgba(211, 0, 0, 0); } }
         .listening-active { animation: pulse-red 1.5s infinite; background-color: #ff0000 !important; }
         .hidden { display: none; }
 
-        @media (max-width: 768px) {
-            .action-card { padding: 20px; min-height: 98vh; }
-            .pair-grid { flex-direction: column; gap: 15px; }
-            .header-logo { width: 35px; height: 35px; }
+        @media (max-width: 700px) {
+            .word-text, .ipa-text { font-size: 1.6rem; }
+            .pair-grid { flex-direction: column; }
+            .action-card { padding: 20px; }
         }
     </style>
 </head>
@@ -125,8 +123,10 @@
 
 <div class="action-card">
     <div class="section-header">
-        <div class="header-title-area">
-            <img src="https://lh3.googleusercontent.com/d/1DQWHMZf7MpnzZBa3CbqqyJGLQEK6U4lZ" class="header-logo" alt="Logo">
+        <div class="header-title-container">
+            <div class="logo-bracket">
+                <img src="https://drive.google.com/thumbnail?id=1DQWHMZf7MpnzZBa3CbqqyJGLQEK6U4lZ" alt="Kira">
+            </div>
             <span>Consonant Mastery</span>
         </div>
         <span id="counter" style="color: #D30000;">1 / 45</span>
@@ -138,7 +138,6 @@
 
     <div id="quiz-area">
         <div class="exercise-block">
-            <p style="font-size: 0.9rem; color: #888; margin-top: 0; text-transform: uppercase;">Pronuncia uno de los dos:</p>
             <div class="pair-grid">
                 <div class="word-box" id="box1">
                     <span class="word-text" id="w1">Very</span>
@@ -152,7 +151,7 @@
                 </div>
             </div>
             <button class="btn-speak" id="mic" onclick="start()">Presiona y Habla 🎤</button>
-            <div id="feedback">Listo para escuchar.</div>
+            <div id="feedback">Pronuncia AMBAS palabras para continuar.</div>
             <button id="next" class="btn-next hidden" onclick="go()">Siguiente Par ➔</button>
             <button id="skip" class="btn-skip" onclick="go()">Saltar Par</button>
         </div>
@@ -182,8 +181,8 @@
         { a: "joke", b: "yoke", ipaA: "/dʒoʊk/", ipaB: "/joʊk/", sA: "Broma", sB: "Yugo" },
         { a: "jello", b: "yellow", ipaA: "/ˈdʒel.oʊ/", ipaB: "/ˈjel.oʊ/", sA: "Gelatina", sB: "Amarillo" },
         { a: "share", b: "chair", ipaA: "/ʃer/", ipaB: "/tʃer/", sA: "Compartir", sB: "Silla" },
-        { a: "ship", b: "chip", ipaA: "/ʃɪp/", ipaB: "/tʃɪp/", sA: "Barco", sB: "Papita" },
-        { a: "wash", b: "watch", ipaA: "/wɑːʃ/", ipaB: "/wɑːtʃ/", sA: "Lavar", sB: "Ver/Reloj" },
+        { a: "ship", b: "chip", ipaA: "/ʃɪp/", ipaB: "/tʃɪp/", sA: "Barco", sB: "Fritura" },
+        { a: "wash", b: "watch", ipaA: "/wɑːʃ/", ipaB: "/wɑːtʃ/", sA: "Lavar", sB: "Reloj" },
         { a: "shoes", b: "choose", ipaA: "/ʃuːz/", ipaB: "/tʃuːz/", sA: "Zapatos", sB: "Elegir" },
         { a: "cash", b: "catch", ipaA: "/kæʃ/", ipaB: "/kætʃ/", sA: "Efectivo", sB: "Atrapar" },
         { a: "sing", b: "sink", ipaA: "/sɪŋ/", ipaB: "/sɪŋk/", sA: "Cantar", sB: "Hundirse" },
@@ -194,7 +193,7 @@
         { a: "thaw", b: "zoo", ipaA: "/θɔː/", ipaB: "/zuː/", sA: "Descongelar", sB: "Zoológico" },
         { a: "thin", b: "zing", ipaA: "/θɪn/", ipaB: "/zɪŋ/", sA: "Delgado", sB: "Energía" },
         { a: "math", b: "maze", ipaA: "/mæθ/", ipaB: "/meɪz/", sA: "Mates", sB: "Laberinto" },
-        { a: "faith", b: "faze", ipaA: "/feɪθ/", ipaB: "/feɪz/", sA: "Fe", sB: "Inquietar" },
+        { a: "faith", b: "faze", ipaA: "/feɪθ/", ipaB: "/feɪz/", sA: "Fe", sB: "Faze" },
         { a: "death", b: "does", ipaA: "/deθ/", ipaB: "/dʌz/", sA: "Muerte", sB: "Hace" },
         { a: "pleasure", b: "pressure", ipaA: "/ˈpleʒ.ɚ/", ipaB: "/ˈpreʃ.ɚ/", sA: "Placer", sB: "Presión" },
         { a: "vision", b: "fission", ipaA: "/ˈvɪʒ.ən/", ipaB: "/ˈfɪʃ.ən/", sA: "Visión", sB: "Fisión" },
@@ -208,22 +207,24 @@
         { a: "bird", b: "sugar", ipaA: "/bɝːrd/", ipaB: "/ˈʃʊɡ.ɚ/", sA: "Pájaro", sB: "Azúcar" }
     ];
 
-    // Flexibilidad para el motor de voz
+    // Variantes para compensar limitaciones de la Speech API
     const variants = {
-        "berry": ["barry", "bury", "very"],
+        "berry": ["barry", "bury", "very", "barrie"],
         "very": ["berry", "bury", "ferry"],
-        "they": ["day", "the"],
-        "sir": ["sure", "search"]
+        "sir": ["search", "sure"],
+        "bird": ["beard", "board"]
     };
 
     let idx = 0;
+    let doneA = false;
+    let doneB = false;
+
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const rec = Recognition ? new Recognition() : null;
     if(rec) { rec.lang = 'en-US'; rec.continuous = false; }
 
     function start() {
         if (!rec) return alert("Micro no compatible.");
-        resetBoxes();
         try { rec.start(); } catch(e) {}
         const micBtn = document.getElementById('mic');
         micBtn.classList.add('listening-active');
@@ -244,22 +245,34 @@
 
         if (checkMatch(heard, wordA)) {
             document.getElementById('box1').classList.add('active');
-            fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].a}" ✅</span>`;
-            showNext();
+            doneA = true;
+            fb.innerHTML = `<span style="color:#00FF00">"${data[idx].a}" OK!</span>`;
         } else if (checkMatch(heard, wordB)) {
             document.getElementById('box2').classList.add('active');
-            fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].b}" ✅</span>`;
-            showNext();
-        } else { fb.innerHTML = `<span style="color:#D30000">Escuché: "${heard}"... intenta de nuevo.</span>`; }
+            doneB = true;
+            fb.innerHTML = `<span style="color:#00FF00">"${data[idx].b}" OK!</span>`;
+        } else { 
+            fb.innerHTML = `<span style="color:#D30000">Escuché: "${heard}"</span>`; 
+        }
+
+        if (doneA && doneB) {
+            fb.innerHTML = `<span style="color:#00FF00">¡AMBAS LISTAS! ✅</span>`;
+            document.getElementById('next').classList.remove('hidden');
+            document.getElementById('skip').classList.add('hidden');
+        }
     };
 
-    function showNext() { document.getElementById('next').classList.remove('hidden'); document.getElementById('skip').classList.add('hidden'); }
-    rec.onend = () => { const micBtn = document.getElementById('mic'); micBtn.classList.remove('listening-active'); micBtn.innerText = "Presiona y Habla 🎤"; };
-    function resetBoxes() { document.getElementById('box1').classList.remove('active'); document.getElementById('box2').classList.remove('active'); }
+    rec.onend = () => {
+        const micBtn = document.getElementById('mic');
+        micBtn.classList.remove('listening-active');
+        micBtn.innerText = "Presiona y Habla 🎤";
+    };
 
     function go() {
         idx++;
         if (idx < data.length) {
+            doneA = false;
+            doneB = false;
             document.getElementById('w1').innerText = data[idx].a.charAt(0).toUpperCase() + data[idx].a.slice(1);
             document.getElementById('w2').innerText = data[idx].b.charAt(0).toUpperCase() + data[idx].b.slice(1);
             document.getElementById('ipa1').innerText = data[idx].ipaA;
@@ -269,18 +282,18 @@
             
             document.getElementById('s1').classList.add('blur');
             document.getElementById('s2').classList.add('blur');
+            document.getElementById('box1').classList.remove('active');
+            document.getElementById('box2').classList.remove('active');
             
-            resetBoxes();
             document.getElementById('counter').innerText = `${idx + 1} / ${data.length}`;
             document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
             document.getElementById('next').classList.add('hidden');
             document.getElementById('skip').classList.remove('hidden');
-            document.getElementById('feedback').innerHTML = "Listo.";
+            document.getElementById('feedback').innerText = "Pronuncia AMBAS palabras para continuar.";
         } else {
             document.getElementById('quiz-area').innerHTML = `<h2 style="color:#00FF00">¡RETO COMPLETADO!</h2><button class="btn-speak" onclick="location.reload()">REINICIAR</button>`;
         }
     }
-    document.getElementById('progress-bar').style.width = `${((idx + 1) / data.length) * 100}%`;
 </script>
 </body>
 </html>
