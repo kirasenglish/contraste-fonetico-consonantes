@@ -19,7 +19,6 @@
             color: white; 
         }
         
-        /* TARJETA MAXIMIZADA */
         .action-card { 
             background: #000; 
             border-left: 6px solid #D30000; 
@@ -27,20 +26,21 @@
             padding: 40px; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.9); 
             width: 98%; 
-            max-width: 1200px; /* Tamaño masivo en PC */
-            min-height: 95vh; /* Casi todo el alto de la pantalla */
+            max-width: 1200px; 
+            min-height: 95vh; 
             display: flex; 
             flex-direction: column; 
             box-sizing: border-box; 
             margin: 10px;
         }
         
+        /* Cabecera con Logo integrado antes del texto */
         .section-header { 
             color: #ffffff; 
-            font-size: 1rem; 
+            font-size: 1.2rem; 
             font-weight: 700; 
             text-transform: uppercase; 
-            border-bottom: 2px solid #D30000; 
+            border-bottom: 3px solid #D30000; 
             padding-bottom: 15px; 
             margin-bottom: 30px; 
             display: flex; 
@@ -48,29 +48,27 @@
             align-items: center; 
         }
 
-        .progress-container { width: 100%; background: #222; height: 10px; border-radius: 5px; margin-bottom: 40px; overflow: hidden; }
+        .header-title-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #D30000;
+        }
+
+        .progress-container { width: 100%; background: #222; height: 12px; border-radius: 6px; margin-bottom: 40px; overflow: hidden; }
         .progress-bar { height: 100%; background: #D30000; width: 0%; transition: width 0.4s ease; }
         
-        #quiz-area { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-        }
+        #quiz-area { flex: 1; display: flex; flex-direction: column; justify-content: center; }
         
-        .exercise-block { 
-            background: #111; 
-            padding: 50px 30px; 
-            border-radius: 20px; 
-            border: 1px solid #222; 
-            text-align: center; 
-        }
+        .exercise-block { background: #111; padding: 50px 30px; border-radius: 20px; border: 1px solid #222; text-align: center; }
         
-        .pair-grid { 
-            display: flex; 
-            gap: 20px; 
-            margin-bottom: 40px; 
-        }
+        .pair-grid { display: flex; gap: 20px; margin-bottom: 40px; }
 
         .word-box { 
             flex: 1; 
@@ -83,7 +81,7 @@
 
         .word-box.active { border-color: #00FF00; background: #0a250a; transform: scale(1.05); }
         
-        /* Fuentes masivas para monitores grandes */
+        /* Palabras y Fonemas: Mismo tamaño y Bold */
         .word-text { font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 700; display: block; margin-bottom: 10px; }
         .ipa-text { color: #D30000; font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 700; display: block; margin-bottom: 10px; }
         
@@ -116,12 +114,10 @@
         .listening-active { animation: pulse-red 1.5s infinite; background-color: #ff0000 !important; }
         .hidden { display: none; }
 
-        /* Ajustes específicos para móviles */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .action-card { padding: 20px; min-height: 98vh; }
             .pair-grid { flex-direction: column; gap: 15px; }
-            .word-box { padding: 20px 10px; }
-            .exercise-block { padding: 30px 15px; }
+            .header-logo { width: 35px; height: 35px; }
         }
     </style>
 </head>
@@ -129,15 +125,20 @@
 
 <div class="action-card">
     <div class="section-header">
-        <span>Consonant Mastery Challenge</span>
+        <div class="header-title-area">
+            <img src="https://lh3.googleusercontent.com/d/1DQWHMZf7MpnzZBa3CbqqyJGLQEK6U4lZ" class="header-logo" alt="Logo">
+            <span>Consonant Mastery</span>
+        </div>
         <span id="counter" style="color: #D30000;">1 / 45</span>
     </div>
+
     <div class="progress-container">
         <div class="progress-bar" id="progress-bar"></div>
     </div>
+
     <div id="quiz-area">
         <div class="exercise-block">
-            <p style="font-size: 0.9rem; color: #888; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">Pronuncia uno de los dos:</p>
+            <p style="font-size: 0.9rem; color: #888; margin-top: 0; text-transform: uppercase;">Pronuncia uno de los dos:</p>
             <div class="pair-grid">
                 <div class="word-box" id="box1">
                     <span class="word-text" id="w1">Very</span>
@@ -181,7 +182,7 @@
         { a: "joke", b: "yoke", ipaA: "/dʒoʊk/", ipaB: "/joʊk/", sA: "Broma", sB: "Yugo" },
         { a: "jello", b: "yellow", ipaA: "/ˈdʒel.oʊ/", ipaB: "/ˈjel.oʊ/", sA: "Gelatina", sB: "Amarillo" },
         { a: "share", b: "chair", ipaA: "/ʃer/", ipaB: "/tʃer/", sA: "Compartir", sB: "Silla" },
-        { a: "ship", b: "chip", ipaA: "/ʃɪp/", ipaB: "/tʃɪp/", sA: "Barco", sB: "Fritura" },
+        { a: "ship", b: "chip", ipaA: "/ʃɪp/", ipaB: "/tʃɪp/", sA: "Barco", sB: "Papita" },
         { a: "wash", b: "watch", ipaA: "/wɑːʃ/", ipaB: "/wɑːtʃ/", sA: "Lavar", sB: "Ver/Reloj" },
         { a: "shoes", b: "choose", ipaA: "/ʃuːz/", ipaB: "/tʃuːz/", sA: "Zapatos", sB: "Elegir" },
         { a: "cash", b: "catch", ipaA: "/kæʃ/", ipaB: "/kætʃ/", sA: "Efectivo", sB: "Atrapar" },
@@ -207,6 +208,14 @@
         { a: "bird", b: "sugar", ipaA: "/bɝːrd/", ipaB: "/ˈʃʊɡ.ɚ/", sA: "Pájaro", sB: "Azúcar" }
     ];
 
+    // Flexibilidad para el motor de voz
+    const variants = {
+        "berry": ["barry", "bury", "very"],
+        "very": ["berry", "bury", "ferry"],
+        "they": ["day", "the"],
+        "sir": ["sure", "search"]
+    };
+
     let idx = 0;
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const rec = Recognition ? new Recognition() : null;
@@ -226,11 +235,18 @@
         const wordA = data[idx].a.toLowerCase();
         const wordB = data[idx].b.toLowerCase();
         const fb = document.getElementById('feedback');
-        if (heard.includes(wordA)) {
+
+        const checkMatch = (input, target) => {
+            if (input.includes(target)) return true;
+            if (variants[target] && variants[target].some(v => input.includes(v))) return true;
+            return false;
+        };
+
+        if (checkMatch(heard, wordA)) {
             document.getElementById('box1').classList.add('active');
             fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].a}" ✅</span>`;
             showNext();
-        } else if (heard.includes(wordB)) {
+        } else if (checkMatch(heard, wordB)) {
             document.getElementById('box2').classList.add('active');
             fb.innerHTML = `<span style="color:#00FF00">Entendí: "${data[idx].b}" ✅</span>`;
             showNext();
